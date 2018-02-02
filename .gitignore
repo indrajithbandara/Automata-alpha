@@ -54,3 +54,7 @@ dkms.conf
 *.hasee
 *.uvopt
 *.uvproj
+*.bak
+*.dep
+OBJ/*.*
+USER/JLinkLog.txt

@@ -2,6 +2,11 @@
 #include "ASCIICODE.H"
 #include "W25QXX.H"
 
+_LCD_CONFIG LCD_CONFIG;//LCD结构体
+u8 DISPLAY_DIR_CTRL=0;//显示方向
+u16 POINT_COLOR=0xFFFF;//当前颜色
+u16 BACK_COLOR=0x0000;//背景颜色
+
 void LCD_FSMC_INIT(void)
 {
 	GPIO_InitTypeDef LCD_FSMC_INIT;

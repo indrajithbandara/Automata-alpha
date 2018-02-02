@@ -3,29 +3,28 @@
 #include "delay.h"
 #include "LCD.H"
 #include "W25QXX.H"
+#include "24CXX.H"
 #include "TOUCH.H"
 #include "NRF24L01.H"
-
-_LCD_CONFIG LCD_CONFIG;//LCD参数
-u8 DISPLAY_DIR_CTRL;//屏幕方向控制
-
-u8 tmp_buf[33];//NRF24L01 接受/发送缓存
-
-u16 POINT_COLOR;//当前颜色
-u16 BACK_COLOR;//背景颜色
+#include "DIGI_SERVO.H"
 
 int main(void)
 {
-	DISPLAY_DIR_CTRL=0;
+	/////////////////////////////////////////////////////////////////////////////系统初始化
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//设置系统中断优先级分组2
-	delay_init(168);
-	uart_init(115200);
-	W25QXX_Init();
-	LCD_INIT_ILI9325();
-	POINT_COLOR=0x07E0;
-	BACK_COLOR=0X0000;
-	GUI_DRAW_FILL(0,0,LCD_CONFIG.LCD_WIDTH-1,LCD_CONFIG.LCD_HEIGHT-1,BACK_COLOR);
+	delay_init(168);//延时初始化
+	uart_init(115200);//串口1初始化
+
+	/////////////////////////////////////////////////////////////////////////////硬件初始化
+	W25QXX_Init();//FLASH初始化
+	LCD_INIT_ILI9325();//LCD初始化
+	POINT_COLOR=0x07E0;//画笔颜色
+	BACK_COLOR=0X0000;//背景颜色
+	AT24CXX_Init();
 	TP_Init();
+	digitalServo_Init();
+	/////////////////////////////////////////////////////////////////////////////其他初始化
+	GUI_DRAW_FILL(0,0,LCD_CONFIG.LCD_WIDTH-1,LCD_CONFIG.LCD_HEIGHT-1,BACK_COLOR);//液晶显示背景设置为黑色
 	
 	while(1)
 	{
